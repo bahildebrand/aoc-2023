@@ -15,10 +15,6 @@ impl Day1 {
         ("nine", "n9e"),
     ];
 
-    pub fn new() -> Self {
-        Self
-    }
-
     fn get_calibration(&self, input: &str) -> u32 {
         let vals = input
             .lines()

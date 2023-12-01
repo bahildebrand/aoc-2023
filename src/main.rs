@@ -30,7 +30,7 @@ enum Commands {
 
 fn main() {
     let args = Args::parse();
-    let days: Vec<Box<dyn Day>> = vec![Box::new(Day1::new())];
+    let days: Vec<Box<dyn Day>> = vec![Box::new(Day1)];
 
     match args.command {
         Commands::Day { day } => day_command(day, days),
