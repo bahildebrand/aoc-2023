@@ -1,10 +1,10 @@
 mod challenges;
 mod day;
-mod fetch_input;
+mod input;
 
 use crate::challenges::day1::Day1;
 use crate::day::Day;
-use crate::fetch_input::fetch_input;
+use crate::input::fetch_input;
 
 use clap::{Parser, Subcommand};
 
@@ -30,7 +30,7 @@ enum Commands {
 
 fn main() {
     let args = Args::parse();
-    let days: Vec<Box<dyn Day>> = vec![Box::new(Day1)];
+    let days: Vec<Box<dyn Day>> = vec![Box::new(Day1::new())];
 
     match args.command {
         Commands::Day { day } => day_command(day, days),
@@ -55,8 +55,9 @@ fn day_command(day: Option<usize>, days: Vec<Box<dyn Day>>) {
 }
 
 fn run_day(day: &Box<dyn Day>, day_number: usize) {
-    println!("Day {} part 1:\n{}", day_number, day.part1());
-    println!("Day {} part 2:\n{}", day_number, day.part2());
+    let input = input::get_input(day_number);
+    println!("Day {} part 1: {}", day_number, day.part1(&input));
+    println!("Day {} part 2: {}", day_number, day.part2(&input));
 }
 
 fn fetch_input_command(day: usize, days_implemented: usize) {

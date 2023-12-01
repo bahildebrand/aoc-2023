@@ -24,3 +24,8 @@ pub fn fetch_input(day: usize) {
         .expect("Failed to write to file");
     println!("Wrote input to {}", file_name);
 }
+
+pub fn get_input(day: usize) -> String {
+    let file_name = format!("input/day-{}.txt", day);
+    std::fs::read_to_string(&file_name).expect("Failed to read input file")
+}
