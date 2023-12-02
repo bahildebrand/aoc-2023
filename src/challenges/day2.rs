@@ -90,7 +90,26 @@ impl Day for Day2 {
     }
 
     fn part2(&self, input: &str) -> String {
-        "".to_string()
+        let games = self.parse_game(input);
+        games
+            .iter()
+            .map(|game| {
+                let mut max_cubes = Pull {
+                    blue: 0,
+                    green: 0,
+                    red: 0,
+                };
+
+                game.pulls.iter().for_each(|pull| {
+                    max_cubes.blue = max_cubes.blue.max(pull.blue);
+                    max_cubes.green = max_cubes.green.max(pull.green);
+                    max_cubes.red = max_cubes.red.max(pull.red);
+                });
+
+                max_cubes.blue * max_cubes.green * max_cubes.red
+            })
+            .sum::<u32>()
+            .to_string()
     }
 }
 
@@ -98,25 +117,23 @@ impl Day for Day2 {
 mod test {
     use super::*;
 
-    const INPUT1: &str = r"Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+    const INPUT: &str = r"Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
     Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
     Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
     Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
     Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green";
 
-    const INPUT2: &str = r"";
-
     #[test]
     fn test_part1() {
         let day = Day2;
 
-        assert_eq!(day.part1(INPUT1), "8");
+        assert_eq!(day.part1(INPUT), "8");
     }
 
     #[test]
     fn test_part2() {
         let day = Day2;
 
-        assert_eq!(day.part2(INPUT2), "");
+        assert_eq!(day.part2(INPUT), "2286");
     }
 }
