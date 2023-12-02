@@ -3,6 +3,7 @@ mod day;
 mod input;
 
 use crate::challenges::day1::Day1;
+use crate::challenges::day2::Day2;
 use crate::day::Day;
 use crate::input::fetch_input;
 
@@ -26,7 +27,7 @@ enum Commands {
 
 fn main() {
     let args = Args::parse();
-    let days: Vec<Box<dyn Day>> = vec![Box::new(Day1)];
+    let days: Vec<Box<dyn Day>> = vec![Box::new(Day1), Box::new(Day2)];
 
     match args.command {
         Commands::Day { day } => day_command(day, days),
@@ -44,7 +45,7 @@ fn day_command(day: Option<usize>, days: Vec<Box<dyn Day>>) {
         }
         None => {
             for (day_num, day) in days.iter().enumerate() {
-                run_day(&day, day_num + 1);
+                run_day(day, day_num + 1);
             }
         }
     }
