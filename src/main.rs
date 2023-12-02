@@ -18,14 +18,10 @@ struct Args {
 
 #[derive(Subcommand, Debug)]
 enum Commands {
-    Day {
-        #[arg(short, long)]
-        day: Option<usize>,
-    },
-    FetchInput {
-        #[arg(short, long)]
-        day: usize,
-    },
+    #[command(arg_required_else_help = false)]
+    Day { day: Option<usize> },
+    #[command(arg_required_else_help = true)]
+    FetchInput { day: usize },
 }
 
 fn main() {
