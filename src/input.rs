@@ -10,7 +10,7 @@ pub fn fetch_input(day: usize) {
 
     let client = Client::new();
     let body = client
-        .get(&url)
+        .get(url)
         .header("Cookie", cookie)
         .send()
         .expect("Failed to send request")
@@ -27,5 +27,5 @@ pub fn fetch_input(day: usize) {
 
 pub fn get_input(day: usize) -> String {
     let file_name = format!("input/day-{}.txt", day);
-    std::fs::read_to_string(&file_name).expect("Failed to read input file")
+    std::fs::read_to_string(file_name).expect("Failed to read input file")
 }

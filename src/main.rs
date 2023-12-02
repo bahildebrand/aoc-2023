@@ -40,18 +40,18 @@ fn day_command(day: Option<usize>, days: Vec<Box<dyn Day>>) {
         Some(input_day) => {
             if validate_day(input_day, days.len()) {
                 let day = &days[input_day - 1];
-                run_day(day, input_day);
+                run_day(day.as_ref(), input_day);
             }
         }
         None => {
             for (day_num, day) in days.iter().enumerate() {
-                run_day(day, day_num + 1);
+                run_day(day.as_ref(), day_num + 1);
             }
         }
     }
 }
 
-fn run_day(day: &Box<dyn Day>, day_number: usize) {
+fn run_day(day: &dyn Day, day_number: usize) {
     let input = input::get_input(day_number);
     println!("Day {} part 1: {}", day_number, day.part1(&input));
     println!("Day {} part 2: {}", day_number, day.part2(&input));

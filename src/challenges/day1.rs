@@ -20,7 +20,7 @@ impl Day1 {
             .lines()
             .map(|line| {
                 line.chars()
-                    .filter_map(|c| c.is_digit(10).then_some(c))
+                    .filter(|c| c.is_ascii_digit())
                     .collect::<Vec<_>>()
             })
             .collect::<Vec<_>>();
