@@ -114,28 +114,21 @@ impl Schematic {
 
     fn calc_gear_ratio(&mut self) -> usize {
         let Schematic { parts, symbols } = self;
-        let filtered_parts = symbols
+        symbols
             .iter()
             .filter(|symbol| symbol.symbol.eq_ignore_ascii_case(&'*'))
             .map(|symbol| {
                 symbol
                     .coord
                     .neighbors()
-                    .map(|neighbor| {
+                    .flat_map(|neighbor| {
                         parts
                             .iter()
                             .filter(|part| part.contains(neighbor))
                             .collect::<Vec<_>>()
                     })
-                    .collect::<Vec<_>>()
-                    .into_iter()
-                    .flatten()
                     .collect::<HashSet<_>>()
             })
-            .collect::<Vec<_>>();
-
-        filtered_parts
-            .iter()
             .filter(|parts| parts.len() == 2)
             .map(|parts| parts.iter().map(|part| part.number).product::<usize>())
             .sum()
