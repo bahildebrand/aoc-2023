@@ -6,6 +6,7 @@ use crate::challenges::{Day1, Day2, Day3};
 use crate::day::Day;
 use crate::input::fetch_input;
 
+use challenges::Day4;
 use clap::{Parser, Subcommand};
 
 #[derive(Parser, Debug)]
@@ -26,7 +27,12 @@ enum Commands {
 
 fn main() {
     let args = Args::parse();
-    let days: Vec<Box<dyn Day>> = vec![Box::new(Day1), Box::new(Day2), Box::new(Day3)];
+    let days: Vec<Box<dyn Day>> = vec![
+        Box::new(Day1),
+        Box::new(Day2),
+        Box::new(Day3),
+        Box::new(Day4),
+    ];
 
     match args.command {
         Commands::Day { day } => day_command(day, days),
