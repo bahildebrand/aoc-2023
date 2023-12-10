@@ -9,3 +9,4 @@ edition = "2021"
 clap = { version = "4.4.10", features = ["derive"] }
 regex = "1.10.2"
 reqwest = { version = "0.11.22", features = ["blocking"] }
+rstest = "0.18.2"
