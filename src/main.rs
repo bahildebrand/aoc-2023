@@ -2,7 +2,7 @@ mod challenges;
 mod day;
 mod input;
 
-use crate::challenges::{Day1, Day2, Day3, Day4, Day5, Day6, Day7, Day8};
+use crate::challenges::{Day1, Day2, Day3, Day4, Day5, Day6, Day7, Day8, Day9};
 use crate::day::Day;
 use crate::input::fetch_input;
 
@@ -35,6 +35,7 @@ fn main() {
         Box::new(Day6),
         Box::new(Day7),
         Box::new(Day8),
+        Box::new(Day9),
     ];
 
     match args.command {
