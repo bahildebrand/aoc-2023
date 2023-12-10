@@ -38,17 +38,28 @@ struct Network {
 }
 
 impl Network {
-    fn calc_moves(&self) -> usize {
-        let mut cur_location: &str = "AAA";
+    fn calc_moves(&self, start_nodes: &[&str], end_match: bool) -> usize {
+        let mut cur_locations = start_nodes.to_vec();
 
         self.instructions
             .iter()
             .cycle()
             .take_while(|node| {
-                let idx = usize::from(**node);
-                cur_location = self.nodes.get(cur_location).unwrap()[idx].as_str();
+                let locs = cur_locations
+                    .iter_mut()
+                    .map(|loc| {
+                        let idx = usize::from(**node);
+                        *loc = self.nodes.get(*loc).unwrap()[idx].as_str();
 
-                cur_location != "ZZZ"
+                        if !end_match {
+                            *loc != "ZZZ"
+                        } else {
+                            !loc.ends_with('Z')
+                        }
+                    })
+                    .collect::<Vec<_>>();
+
+                locs.iter().any(|loc| *loc)
             })
             .count()
             + 1
@@ -66,7 +77,7 @@ impl FromStr for Network {
             .map(Instruction::try_from)
             .collect::<Result<Vec<_>, _>>()?;
 
-        let regex = Regex::new(r"([A-Z])\w+").unwrap();
+        let regex = Regex::new(r"([A-Z]|[1-9])\w+").unwrap();
         let nodes = parts[1]
             .lines()
             .map(|line| {
@@ -91,12 +102,23 @@ pub struct Day8;
 impl Day for Day8 {
     fn part1(&self, input: &str) -> String {
         let network = input.parse::<Network>().unwrap();
+        let start_nodes = ["AAA"];
 
-        network.calc_moves().to_string()
+        network
+            .calc_moves(start_nodes.as_slice(), false)
+            .to_string()
     }
 
-    fn part2(&self, _input: &str) -> String {
-        "".to_string()
+    fn part2(&self, input: &str) -> String {
+        let network = input.parse::<Network>().unwrap();
+        let start_nodes = network
+            .nodes
+            .iter()
+            .filter(|(k, _)| k.ends_with('A'))
+            .map(|(k, _)| k.as_str())
+            .collect::<Vec<_>>();
+
+        network.calc_moves(start_nodes.as_slice(), true).to_string()
     }
 }
 
@@ -122,6 +144,17 @@ mod test {
     BBB = (AAA, ZZZ)
     ZZZ = (ZZZ, ZZZ)";
 
+    const INPUT3: &str = r"LR
+
+    11A = (11B, XXX)
+    11B = (XXX, 11Z)
+    11Z = (11B, XXX)
+    22A = (22B, XXX)
+    22B = (22C, 22C)
+    22C = (22Z, 22Z)
+    22Z = (22B, 22B)
+    XXX = (XXX, XXX)";
+
     #[rstest]
     #[case(INPUT1, "2")]
     #[case(INPUT2, "6")]
@@ -135,6 +168,6 @@ mod test {
     fn test_part2() {
         let day = Day8;
 
-        assert_eq!(day.part2(INPUT1), "");
+        assert_eq!(day.part2(INPUT3), "6");
     }
 }
